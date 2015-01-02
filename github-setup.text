@@ -1,0 +1,44 @@
+After-installing Github Configuring Git identification
+------------------------------------------------------
+	(In terminal type the following)
+	 # Set your username
+	$ git config --global user.name "Your Name Here"
+
+	# Set your email address
+	$ git config --global user.email "your_name@domain.com"
+
+ Generate a new SSH key
+
+ 	ssh-keygen -t rsa -C "your_email@example.com"
+	# Creates a new ssh key using the provided email
+	# Generating public/private rsa key pair.
+	# Enter file in which to save the key (/your_home_path/.ssh/id_rsa):
+
+	Enter passphrase (empty for no passphrase): [Type a passphrase]
+	# Enter same passphrase again: [Type passphrase again]
+
+heroku-Helping sites
+--------------------
+	1.http://jgtr.github.io/blog/2013/07/28/deploying-a-sqlite3-database-to-heroku-for-production-using-postgres/
+	2.https://devcenter.heroku.com/articles/getting-started-with-rails4
+	3.https://devcenter.heroku.com/
+	4.http://stackoverflow.com/questions/4269922/permission-denied-publickey-when-deploying-heroku-code-fatal-the-remote-end
+	5.https://www.railstutorial.org/book/beginning#code-heroku_create
+	6.http://stackoverflow.com/questions/4269922/permission-denied-publickey-when-deploying-heroku-code-fatal-the-remote-end
+
+
+
+git install 
+
+
+add the PPA to the local index:
+
+sudo add-apt-repository ppa:git-core/ppa
+update the local repository index
+
+sudo apt-get update
+
+and lastly install the git package.
+
+sudo apt-get install git
+

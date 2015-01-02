@@ -1,0 +1,71 @@
+
+
+	Acts_as_votable gem steps(Face book like/dislike functionality)
+	---------------------------------------------------------------
+
+		step:1
+
+	Add the following to your Gemfile
+		gem 'acts_as_votable' and bundle
+
+		step:2
+
+	Acts As Votable uses a votes table to store all voting information. 
+	To generate and run the migration just use
+		rails generate acts_as_votable:migration
+		rake db:migrate
+
+		step:3
+
+	In user model add the following
+		acts_as_voter
+	And in other models Add
+		acts_as_votable
+
+		step:4
+
+	Change the route file (chane resourse as u want)
+		resources :contents do
+		    member do
+		        put "like", to: "contents#like"
+		        put "dislike", to: "contents#dislike"
+		    end
+	    	end
+
+	    step:5
+
+	Add the following to the controller
+
+	    def like
+		    @content = Content.find(params[:id])
+		    @content.liked_by current_user
+		    redirect_to @content
+		end
+
+		def dislike
+		    @content = Content.find(params[:id])
+		    @content.disliked_by current_user
+		    redirect_to @content
+		end
+
+
+		step:6
+
+	Add the following to the view file(show)
+
+		<% if user_signed_in? %>
+		  <% if current_user.liked? @content %>
+		      <%= link_to "Dislike", dislike_content_path(@content), class: 'vote', method: :put %>
+		  <% else %>
+		      <%= link_to "Like", like_content_path(@content), class: 'vote', method: :put %>
+		  <% end %>
+		  <span> · </span>
+		<% end %>
+
+		<%= @content.get_likes.size %> users like this
+		<br>
+
+
+
+
+		********* Thats'it thank you ***************

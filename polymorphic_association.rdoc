@@ -1,0 +1,144 @@
+                      Polymorphic association steps(comment functionality in facebook)
+                      -------------------------------------------------------------
+ step:1 rails g model comment content:text
+
+ step:2 change migration file 
+
+   	def change
+      create_table :comments do |t|
+        t.text :content
+        t.belongs_to :commentable, polymorphic: true
+       
+        t.timestamps
+      end
+      add_index :comments, [:commentable_id,:commentable_type]
+    end
+    and migrate it
+
+ step:3 Add comment model to
+
+ 	  belongs_to :commentable, polymorphic: true
+
+ step:4 add other models
+
+ 	  has_many :comments, as: :commentable
+
+ step:5 rails g controller comments index new show edit
+
+ step:6 change the routes file
+
+
+      resources :events do 
+        resources :comments
+      end
+      resources :articles do
+        resources :comments
+      end
+      (like this)
+
+ step:7 Full action for comments controller
+
+      class CommentsController < ApplicationController
+        before_action :set_comment, only: [:show, :edit, :update, :destroy]
+        before_filter :load_commentable
+        def index
+          #@commentable = Article.find(params[:article_id])
+          @comments = @commentable.comments
+        end
+
+        def new
+          @comment = @commentable.comments.new
+        end
+
+        def create
+          @comment = @commentable.comments.new(comment_params)
+          if @comment.save
+            redirect_to @commentable,notice: "Comment created"
+          else
+            render :new
+          end
+        end
+
+        def destroy    
+          @comment.destroy
+          if @comment.destroy
+            redirect_to @commentable, notice: "Comment deleted."
+          end
+        end
+
+        def edit    
+        end
+
+        def show    
+        end
+
+        def update    
+          if @comment.update(comment_params)
+            redirect_to @commentable,notice: "Comment updated"
+          end
+        end
+
+        private
+
+        def load_commentable
+          resourse,id = request.path.split('/')[1,2]
+           @commentable = resourse.singularize.classify.constantize.find(id)
+        end
+
+        def comment_params
+          params.require(:comment).permit(:content)
+        end
+
+        def set_comment
+          @comment = Comment.find(params[:id])
+        end
+
+    end
+
+
+ step:8 To make partial file 
+
+      _comment.html.erb
+      <%= @comments.count%><strong>comments</strong>
+      <% @comments.each do |comment|%>
+        <p><%= comment.content%> | <%= link_to "show",[@commentable, comment]%>|
+         <%= link_to "Destroy", [@commentable, comment], method: :delete, data: { confirm: 'Are you sure?' } %>| 
+         <%= link_to 'Edit', [:edit, @commentable, comment] %>
+        </p>
+      <%end%>
+
+      _form.html.erb
+      <%= form_for [@commentable,@comment] do |f|%>
+        <p><%= f.text_area :content%></p>
+        <p><%= f.submit%></p>
+      <%end%>
+
+      index.html.erb
+      <h2>Comments</h2>
+      <%= render 'comments'%>
+      <h5><%= link_to "New comment",[:new,@commentable,:comment]%></h5>
+
+      new.html.erb
+      <h2>New comment</h2>
+      <%= render 'form'%>
+
+      edit.html.erb
+      <h2>Edit comment</h2>
+      <%= render 'form'%>
+
+      show.html.erb
+      <%= @comment.content%>
+
+  step:9 For display comment in show page of other models
+
+      def show
+        @commentable = @article
+        @comments = @commentable.comments
+        @comment = Comment.new
+      end
+
+      show.html.erb(at last)
+      <%= render 'comments/comments'%>
+      <%= render 'comments/form'%>
+
+            *****************That's it coool!******************

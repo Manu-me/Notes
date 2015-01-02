@@ -1,0 +1,41 @@
+						Todo doing steps
+						------------------
+
+	step1: while creating model add one boolean_field eg:- done:boolean
+
+		- rails g scaffold todoo name done:boolean
+
+	step2: Split the index action into two
+
+			def index
+			    @todoos = Todoo.where(done: false)
+			    @todone = Todoo.where(done: true)
+			  end
+
+	step3: Split the index view into two
+
+			<h3>Todo</h3>
+			<% @todoos.each do |todoo| %>		      
+			   <%= todoo.name %>
+			   <p><%= link_to "Mark as done",todoo_path(todoo),method: :put%></p>		        
+			 <% end %>
+
+			<h3>Todo one</h3>
+			  <% @todone.each do |one|%>
+			    <%= one.name%>
+			  <%= link_to 'remove', one, method: :delete, data: { confirm: 'Are you sure?' } %>
+			 <%end%>
+		<%= link_to 'New Todoo', new_todoo_path %>
+
+	step4:modify the form
+
+		<%= f.hidden_field :done,:value => false %>
+
+	step5:modify the update action to
+
+		 @todoo.update_attribute(:done,true)
+		 and redirect to index action(both create and update action)
+
+
+
+	 *********************That's it cooooooooooool!************************

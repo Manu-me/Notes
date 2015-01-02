@@ -1,0 +1,29 @@
+		Ruby on rails installing steps
+		==============================
+
+	step1: sudo apt-get update
+	step2: sudo apt-get install curl (You’ll use Curl for installing RVM.)
+	step3: \curl -L https://get.rvm.io | bash -s stable
+	step4: source ~/.rvm/scripts/rvm
+	step5: rvm requirements
+	step6: rvm install ruby || rvm install 2.1.1 rvm use 2.1.1 --default  ruby -v
+	step7: gem install rails || gem install rails --version=3.2.18
+
+	     Create a Workspace Folder
+	     =========================
+	mkdir workspace
+	cd workspace
+
+For RVM to work properly, you have to check the 'Run command as login shell' checkbox on the Title and Command tab of gnome-terminal's Edit ▸ Profile Preferences menu dialog, in case the menu is missing right click the terminal app and navigate Profiles ▸ Profile Preferences.
+
+
+
+
+To use an older version than the latest you have installed, just wrap the version number in underscores:
+
+rails _1.2.1_ myproject
+
+gem install rails --version=4.1.4
+
+
+	
